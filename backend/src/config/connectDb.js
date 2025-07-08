@@ -4,8 +4,6 @@ import envConfig from './envConfig.js'
 const connectDb = async () => {
   try {
     await mongoose.connect(envConfig.mongo_uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
       dbName: envConfig.db_name,
     });
     console.log("Database connected successfully!");
