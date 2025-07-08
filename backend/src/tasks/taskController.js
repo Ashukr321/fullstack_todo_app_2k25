@@ -39,7 +39,16 @@ const createTask = async (req, res, next) => {
 // Controller to get all tasks for the authenticated user
 const getAllTask = async (req, res, next) => {
   try {
-    // TODO: Implement get all tasks logic here
+    const userId = req.userId;
+    if (!userId) {
+      return next(createError(400, "UserId required"));
+    }
+    // Find all tasks for this user
+    const allTasks = await Task.find({ user: userId }).select("-user");
+    return res.status(200).json({
+      message: "All tasks fetched successfully!",
+      tasks: allTasks
+    });
   } catch (error) {
     next(error);
   }
