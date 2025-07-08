@@ -1,6 +1,4 @@
 
-
-
 // Access the variable in your code:
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -17,8 +15,19 @@ const registerUser = async (name, email, password) => {
   return resData;
 }
 
-// login (placeholder)
+// login 
+const loginUser = async (email, password) => {
+  const response = await fetch(`${baseUrl}/api/v1/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "Application/json"
+    },
+    body: JSON.stringify({ email, password })
+  })
+  const resData = await response.json();
+  return resData;
+}
 
 
-export { registerUser };
+export { registerUser, loginUser };
 
