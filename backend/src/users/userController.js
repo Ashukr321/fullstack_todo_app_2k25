@@ -40,22 +40,20 @@ const registerUser = async (req, res, next) => {
 
 
 // User login
-// English, Hindi, Hinglish comments and corrections applied
-
 const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
     // Check if email is provided
     if (!email) {
-      
+
       const err = createError(400, "Email field is required! (Email field zaroori hai)");
       return next(err);
     }
 
     // Check if password is provided
     if (!password) {
-      
+
       const err = createError(400, "Password field is required! (Password field zaroori hai)");
       return next(err);
     }
@@ -63,7 +61,7 @@ const loginUser = async (req, res, next) => {
     // Find user by email
     const existingUser = await User.findOne({ email: email });
     if (!existingUser) {
-   
+
       const err = createError(400, "User does not exist! (User exist nahi karta)");
       return next(err);
     }
@@ -83,9 +81,7 @@ const loginUser = async (req, res, next) => {
       envConfig.jwt_secret,
       { expiresIn: envConfig.expire_jwt_token }
     );
-
     // Login successful
-
     res.json({
       message: "Login successfull!",
       user: {
@@ -96,21 +92,78 @@ const loginUser = async (req, res, next) => {
       token: token
     });
   } catch (error) {
-    
+
     next(error);
   }
 };
 
 
 // Get current user profile
-const getCurrentUser = (req, res) => {
-  res.json({ message: "Get current user profile route" });
+const getCurrentUser = async (req, res, next) => {
+  try {
+    const userId = req.userId;
+    if (!userId) {
+      const err = createError(400, "User ID is required!");
+      return next(err);
+    }
+
+    const user = await User.findById(userId).select("-password");
+    if (!user) {
+      const err = createError(404, "User not found!")
+      return next(err);
+    }
+
+    res.status(200).json({
+      message: "User profile fetched successfully!",
+      user: user
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
+
 // Update user profile
-const updateUser = (req, res) => {
-  res.json({ message: "Update user profile route" });
+const updateUser = async (req, res, next) => {
+  try {
+    // Get name from request body
+    const { name } = req.body;
+    if (!name) {
+      // Name is required
+      // Name zaroori hai
+      // Naam dalna zaroori hai
+      const err = createError(400, "Please enter name / कृपया नाम दर्ज करें / Naam daalo");
+      return next(err);
+    }
+
+    // Get userId from request (set by auth middleware)
+    const userId = req.userId;
+    if (!userId) {
+      const err = createError(400, "User ID is required! / यूजर आईडी चाहिए / User ID chahiye");
+      return next(err);
+    }
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { name: name },
+      { new: true, select: '-password' }
+    ).select('-password');
+
+    if (!user) {
+      const err = createError(404, "User not found!");
+      return next(err);
+    }
+   
+    res.status(200).json({
+      message: "User updated successfully!",
+      user: user
+    });
+
+  } catch (error) {
+    next(error);
+  }
 };
+
 
 // Change user password
 const changePassword = (req, res) => {

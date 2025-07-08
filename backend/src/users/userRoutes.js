@@ -7,6 +7,7 @@ import {
   changePassword,
   deleteUser
 } from './userController.js';
+import isAuthenticated from '../middleware/isAuthenticated.js';
 
 const router = express.Router();
 
@@ -19,15 +20,15 @@ router.post('/auth/register', registerUser);
 router.post('/auth/login', loginUser);
 
 // Get current user profile
-router.get('/auth/me', getCurrentUser);
+router.get('/auth/me', isAuthenticated, getCurrentUser);
 
 // Update user profile
-router.put('/auth/update', updateUser);
+router.put('/auth/update', isAuthenticated, updateUser);
 
 // Change user password
-router.put('/auth/change-password', changePassword);
+router.put('/auth/change-password', isAuthenticated, changePassword);
 
 // Delete user account
-router.delete('/auth/delete', deleteUser);
+router.delete('/auth/delete', isAuthenticated, deleteUser);
 
 export default router;
