@@ -113,7 +113,7 @@ const getCurrentUser = async (req, res, next) => {
       return next(err);
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "User profile fetched successfully!",
       user: user
     });
@@ -153,8 +153,8 @@ const updateUser = async (req, res, next) => {
       const err = createError(404, "User not found!");
       return next(err);
     }
-   
-    res.status(200).json({
+
+    return res.status(200).json({
       message: "User updated successfully!",
       user: user
     });
@@ -207,7 +207,7 @@ const changePassword = async (req, res, next) => {
     // save user
     await user.save();
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "Password changed successfully!"
     });
 
@@ -217,8 +217,25 @@ const changePassword = async (req, res, next) => {
 };
 
 // Delete user account
-const deleteUser = (req, res) => {
-  res.json({ message: "Delete user account route" });
+const deleteUser = async (req, res, next) => {
+  try {
+    const userId = await req.userId;
+    if (!userId) {
+      const err = createError(400, "User ID is required!");
+      return next(err);
+    }
+
+    const deleteUser = await User.findByIdAndDelete(userId);
+    if (!deleteUser) {
+      return next(createError(404, "User not found!"));
+    }
+    return res.status(200).json({
+      message: "Account delete Successfully!"
+    })
+  } catch (error) {
+    next(error);
+  }
+
 };
 
 // Exporting all controllers at the end as per instructions
