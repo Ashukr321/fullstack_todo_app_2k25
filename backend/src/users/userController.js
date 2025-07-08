@@ -166,8 +166,54 @@ const updateUser = async (req, res, next) => {
 
 
 // Change user password
-const changePassword = (req, res) => {
-  res.json({ message: "Change password route" });
+const changePassword = async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword, confirmNewPassword } = req.body;
+
+    // Check if all fields are provided
+    if (!currentPassword || !newPassword || !confirmNewPassword) {
+      // Please provide all fields 
+      const err = createError(400, "All fields are required");
+      return next(err);
+    }
+
+    const userId = req.userId;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      const err = createError(404, "User not found");
+      return next(err);
+    }
+
+    // Check if current password matches
+    const matchPassword = await bcrypt.compare(currentPassword, user.password);
+
+    if (!matchPassword) {
+      // Current password is incorrect
+      const err = createError(400, "Invalid current password");
+      return next(err);
+    }
+
+    // Check if new passwords match
+    if (newPassword !== confirmNewPassword) {
+      // Passwords do not match 
+      const err = createError(400, "Passwords do not match");
+      return next(err);
+    }
+
+    // Hash new password and update
+    const hashPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashPassword;
+    // save user
+    await user.save();
+
+    res.status(200).json({
+      message: "Password changed successfully!"
+    });
+
+  } catch (error) {
+    next(error);
+  }
 };
 
 // Delete user account
