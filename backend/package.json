@@ -26,9 +26,7 @@
     "http-errors": "^2.0.0",
     "install": "^0.13.0",
     "jsonwebtoken": "^9.0.2",
-    "mongo-sanitize": "^1.1.0",
     "mongoose": "^8.16.1",
-    "nodemon": "^3.1.10",
-    "serverless-http": "^3.2.0"
+    "nodemon": "^3.1.10"
   }
 }
