@@ -34,8 +34,6 @@ const createTask = async (req, res, next) => {
     next(error);
   }
 };
-
-
 // Controller to get all tasks for the authenticated user
 const getAllTask = async (req, res, next) => {
   try {
@@ -46,6 +44,7 @@ const getAllTask = async (req, res, next) => {
     // Find all tasks for this user
     const allTasks = await Task.find({ user: userId }).select("-user");
     return res.status(200).json({
+      total: allTasks.length,
       message: "All tasks fetched successfully!",
       tasks: allTasks
     });
@@ -84,7 +83,7 @@ const getTaskById = async (req, res, next) => {
 // Controller to update a specific task by ID
 const updateTaskById = async (req, res, next) => {
   try {
-    const { id } = req.params; 
+    const { id } = req.params;
     const { completed } = req.body;
 
     if (!id) {
@@ -113,7 +112,20 @@ const updateTaskById = async (req, res, next) => {
 // Controller to delete a specific task by ID
 const deleteTaskById = async (req, res, next) => {
   try {
-    // TODO: Implement delete task by ID logic here
+    const { id } = req.params;
+
+    if (!id) {
+      return createError(400, "task id required!");
+    }
+    const deleteTask = await Task.findByIdAndDelete(id);
+    if (!deleteTask) {
+      return createError(400, "task not found");
+    }
+
+    return res.status(200).json({
+      message: "task deleted successfully!"
+    })
+
   } catch (error) {
     next(error);
   }
