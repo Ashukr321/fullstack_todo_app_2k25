@@ -7,7 +7,7 @@ const app = express();
 
 // parse req data 
 app.use(express.json());
-
+app.use(express.urlencoded({ extended: true }));
 // routes
 app.use('/api/v1', userRoute);
 app.use('/api/v1', taskRoute);

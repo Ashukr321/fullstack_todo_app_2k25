@@ -57,7 +57,25 @@ const getAllTask = async (req, res, next) => {
 // Controller to get a specific task by ID
 const getTaskById = async (req, res, next) => {
   try {
-    // TODO: Implement get task by ID logic here
+    // Get the task id from request params
+    const { id } = req.params;
+    if (!id) {
+      // Task id is required
+      return next(createError(400, "task id is required!"));
+    }
+
+    // Find the task by id
+    const task = await Task.findById(id);
+
+    if (!task) {
+      // Task not found
+      return next(createError(404, "Task not found!"));
+    }
+
+    return res.status(200).json({
+      message: "Task fetched successfully!",
+      task: task
+    });
   } catch (error) {
     next(error);
   }
@@ -66,7 +84,27 @@ const getTaskById = async (req, res, next) => {
 // Controller to update a specific task by ID
 const updateTaskById = async (req, res, next) => {
   try {
-    // TODO: Implement update task by ID logic here
+    const { id } = req.params; 
+    const { completed } = req.body;
+
+    if (!id) {
+      // Task id is required
+      return next(createError(400, "task id is required!"));
+    }
+
+    const task = await Task.findById(id);
+
+    if (!task) {
+      // Task not found
+      return next(createError(400, "task not found!"));
+    }
+    task.completed = completed;
+    await task.save();
+
+    return res.status(200).json({
+      message: "task updated successfully!",
+    });
+    // Task update logic completed
   } catch (error) {
     next(error);
   }

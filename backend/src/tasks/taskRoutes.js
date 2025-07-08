@@ -13,7 +13,7 @@ router.get('/tasks', isAuthenticated, getAllTask);
 router.get('/tasks/:id', isAuthenticated, getTaskById);
 
 // Route to update a specific task by ID
-router.put('/tasks/:id', isAuthenticated, getTaskById); // Note: This should likely call an updateTaskById controller
+router.put('/tasks/:id', isAuthenticated, updateTaskById); // Note: This should likely call an updateTaskById controller
 
 // Route to delete a specific task by ID
 router.delete('/tasks/:id', isAuthenticated, deleteTaskById);
