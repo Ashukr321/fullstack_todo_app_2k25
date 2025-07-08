@@ -19,6 +19,13 @@ app.use(express.json());
 app.use(apiRateLimiting);
 app.use(express.urlencoded({ extended: true }));
 
+
+app.use('/',(req,res)=>{
+  return res.json({
+    message:"backend deploy!"
+  })
+})
+
 // routes
 app.use('/api/v1', userRoute);
 app.use('/api/v1', taskRoute);
