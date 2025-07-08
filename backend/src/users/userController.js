@@ -11,7 +11,7 @@ const registerUser = async (req, res, next) => {
 
     // Check if all required fields are provided
     if (!name || !email || !password) {
-     
+
       const err = createError(400, "Please provide all required fields!");
       return next(err);
     }
@@ -22,7 +22,7 @@ const registerUser = async (req, res, next) => {
       return next(err);
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    
+
     const newUser = new User({
       name: name,
       email: email,
@@ -40,9 +40,67 @@ const registerUser = async (req, res, next) => {
 
 
 // User login
-const loginUser = (req, res) => {
-  res.json({ message: "User login route" });
+// English, Hindi, Hinglish comments and corrections applied
+
+const loginUser = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    // Check if email is provided
+    if (!email) {
+      
+      const err = createError(400, "Email field is required! (Email field zaroori hai)");
+      return next(err);
+    }
+
+    // Check if password is provided
+    if (!password) {
+      
+      const err = createError(400, "Password field is required! (Password field zaroori hai)");
+      return next(err);
+    }
+
+    // Find user by email
+    const existingUser = await User.findOne({ email: email });
+    if (!existingUser) {
+   
+      const err = createError(400, "User does not exist! (User exist nahi karta)");
+      return next(err);
+    }
+
+    // Verify password
+    // Password check karo
+    const matchPassword = await bcrypt.compare(password, existingUser.password);
+    if (!matchPassword) {
+      const err = createError(401, "Invalid password! (Galat password)");
+      return next(err);
+    }
+
+    // Create JWT token
+    // Token banao user ki id aur secret key se
+    const token = jwt.sign(
+      { userId: existingUser._id },
+      envConfig.jwt_secret,
+      { expiresIn: envConfig.expire_jwt_token }
+    );
+
+    // Login successful
+
+    res.json({
+      message: "Login successfull!",
+      user: {
+        _id: existingUser._id,
+        name: existingUser.name,
+        email: existingUser.email
+      },
+      token: token
+    });
+  } catch (error) {
+    
+    next(error);
+  }
 };
+
 
 // Get current user profile
 const getCurrentUser = (req, res) => {
