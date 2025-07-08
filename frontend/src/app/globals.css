@@ -5,11 +5,6 @@
   --foreground: #171717;
 }
 
-/* 
-  English: Hide the scrollbar for a cleaner look.
-  Hindi: Scrollbar ko chhupa diya gaya hai, taki saf dikhai de.
-  Hinglish: Scrollbar gayab kar diya, ab page clean lagega.
-*/
 body, html {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none;  /* IE and Edge */
