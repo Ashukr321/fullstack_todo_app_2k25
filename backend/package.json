@@ -12,11 +12,15 @@
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^17.0.1",
     "express": "^5.1.0",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^7.5.1",
     "http-errors": "^2.0.0",
     "install": "^0.13.0",
     "jsonwebtoken": "^9.0.2",
+    "mongo-sanitize": "^1.1.0",
     "mongoose": "^8.16.1",
     "nodemon": "^3.1.10"
   }
