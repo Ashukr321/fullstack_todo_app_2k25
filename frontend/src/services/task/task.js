@@ -1,20 +1,20 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 import getCookies from '../../utils/getCookies.ts'
-const cookies = getCookies(["token"]);
-const token = cookies.token;
 
 const taskService = {
   // Get all tasks
   async getAllTasks() {
     try {
+      const cookies = getCookies(["token"]);
+      const token = cookies.token;
+
       const response = await fetch(`${API_BASE_URL}/api/v1/tasks`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         },
-
       });
 
       if (!response.ok) {
@@ -31,6 +31,9 @@ const taskService = {
   // Get task by ID
   async getTaskById(id) {
     try {
+      const cookies = getCookies(["token"]);
+      const token = cookies.token;
+
       const response = await fetch(`${API_BASE_URL}/api/v1/tasks/${id}`, {
         method: 'GET',
         headers: {
@@ -53,7 +56,10 @@ const taskService = {
   // Create new task
   async createTask(taskData) {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/v1//tasks`, {
+      const cookies = getCookies(["token"]);
+      const token = cookies.token;
+
+      const response = await fetch(`${API_BASE_URL}/api/v1/tasks`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -76,6 +82,9 @@ const taskService = {
   // Update task
   async updateTask(id, taskData) {
     try {
+      const cookies = getCookies(["token"]);
+      const token = cookies.token;
+
       const response = await fetch(`${API_BASE_URL}/api/v1/tasks/${id}`, {
         method: 'PUT',
         headers: {
@@ -99,6 +108,9 @@ const taskService = {
   // Delete task
   async deleteTask(id) {
     try {
+      const cookies = getCookies(["token"]);
+      const token = cookies.token;
+
       const response = await fetch(`${API_BASE_URL}/api/v1/tasks/${id}`, {
         method: 'DELETE',
         headers: {
@@ -117,8 +129,6 @@ const taskService = {
       throw error;
     }
   },
-  
 };
-
 
 export default taskService;
