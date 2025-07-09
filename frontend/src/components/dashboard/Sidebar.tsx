@@ -7,7 +7,7 @@ const menuItems = [
     label: "Dashboard",
     href: "/dashboard",
     icon: (
-      <span className="mr-3">
+      <span className="mr-3 text-blue-500">
         <MdDashboard size={20} />
       </span>
     ), // Dashboard icon
@@ -16,7 +16,7 @@ const menuItems = [
     label: "All Tasks",
     href: "/dashboard/alltask",
     icon: (
-      <span className="mr-3">
+      <span className="mr-3 text-purple-500">
         <MdList size={20} />
       </span>
     ), // List icon
@@ -26,7 +26,7 @@ const menuItems = [
     label: "Create Task",
     href: "/dashboard/createtask",
     icon: (
-      <span className="mr-3">
+      <span className="mr-3 text-green-500">
         <MdAddTask size={20} />
       </span>
     ), // Add Task icon
@@ -35,7 +35,7 @@ const menuItems = [
     label: "Completed Task",
     href: "/dashboard/completedTask",
     icon: (
-      <span className="mr-3">
+      <span className="mr-3 text-yellow-500">
         <MdCheckCircle size={20} />
       </span>
     ), // Completed/Check icon
