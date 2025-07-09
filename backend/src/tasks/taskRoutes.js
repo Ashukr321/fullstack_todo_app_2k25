@@ -8,6 +8,7 @@ router.post("/tasks", isAuthenticated, createTask);
 
 // Route to get all tasks
 router.get('/tasks', isAuthenticated, getAllTask);
+router.get('/tasks/dashboardStats', isAuthenticated, taskStats);
 
 // Route to get a specific task by ID
 router.get('/tasks/:id', isAuthenticated, getTaskById);
@@ -17,6 +18,5 @@ router.put('/tasks/:id', isAuthenticated, updateTaskById); // Note: This should 
 
 // Route to delete a specific task by ID
 router.delete('/tasks/:id', isAuthenticated, deleteTaskById);
-router.get('/tasks/dashboardStats', isAuthenticated, taskStats);
 
 export default router;

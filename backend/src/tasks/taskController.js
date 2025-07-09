@@ -131,43 +131,42 @@ const deleteTaskById = async (req, res, next) => {
   }
 };
 
-// Dashboard task Stats
+
 const taskStats = async (req, res, next) => {
   try {
+    // Ensure req.userId is available and valid
     const userId = req.userId;
     if (!userId) {
-      return next(createError(400, "UserId required"));
+      return next(createError(400, "userId required"));
     }
 
-    // Total tasks
+    // Count stats
     const totalTasks = await Task.countDocuments({ user: userId });
-
-    // Total pending tasks (completed: false)
     const totalPendingTasks = await Task.countDocuments({ user: userId, completed: false });
-    // Total completed tasks (completed: true)
     const totalCompletedTasks = await Task.countDocuments({ user: userId, completed: true });
-
-    // Recently added task (latest by createdAt or _id)
-    // This code finds the most recently added task for the current user.
-    // It searches for a task document where the 'user' field matches the current user's ID.
-    // The 'sort' method sorts the results by 'createdAt' in descending order (most recent first).
-    // If 'createdAt' is not available, it uses '_id' in descending order as a fallback.
-    // The 'select("-user")' part excludes the 'user' field from the returned task object.
-    // In summary: This gets the latest task created by the user, without including the user field in the result.
-
-
-    const recentTask = await Task.findOne({ user: userId })
-      .sort({ createdAt: -1, _id: -1 })
+    const now = new Date();
+    const upcomingHighPriorityTask = await Task.findOne({
+      user: userId,
+      dueDate: { $gte: now }
+    })
+      .sort({ dueDate: 1, createdAt: -1 }) // nearest dueDate first
       .select("-user");
-      
+
+    // Find the most recent task
+    const recentTask = await Task.findOne({ user: userId })
+      .sort({ createdAt: -1 })
+      .select("-user");
 
     return res.status(200).json({
+      success: true,
       message: "Task stats fetched successfully!",
-      totalTasks: totalTasks,
-      totalPendingTasks: totalPendingTasks,
-      recentTask: recentTask,
-      totalCompletedTasks:totalCompletedTasks,
+      totalTasks,
+      totalPendingTasks,
+      totalCompletedTasks,
+      recentTask,
+      upcomingHighPriorityTask
     });
+
   } catch (error) {
     next(error);
   }
