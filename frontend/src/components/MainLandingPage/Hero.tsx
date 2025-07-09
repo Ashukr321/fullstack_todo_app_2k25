@@ -15,15 +15,17 @@ const Hero = () => {
       <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(circle,_1px_1px,_#232329_1px,_transparent_1px)] bg-[size:20px_20px]" />
 
       {/* Floating cards/icons */}
-      {floatingCards.map((card, idx) => (
-        <div
-          key={idx}
-          className={`absolute ${card.className} w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg bg-opacity-80 text-white animate-float-slow`}
-          style={{ animationDelay: `${idx * 0.5}s` }}
-        >
-          {card.icon}
-        </div>
-      ))}
+      <div className="hidden md:block">
+        {floatingCards.map((card, idx) => (
+          <div
+            key={idx}
+            className={`absolute ${card.className} w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg bg-opacity-80 text-white animate-float-slow`}
+            style={{ animationDelay: `${idx * 0.5}s` }}
+          >
+            {card.icon}
+          </div>
+        ))}
+      </div>
 
       {/* Badges */}
       <div className="flex flex-wrap gap-3 mb-6 z-10 mt-10">
