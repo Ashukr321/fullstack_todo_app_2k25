@@ -1,9 +1,11 @@
-# Fullstack Todo App 2k25
+# TaskSprint
+
+A modern, fullstack productivity and task management app designed to help you organize, track, and complete your tasks efficiently.
 
 ## 📁 Folder Structure
 
 ```
-fullstack_todo_app_2k25/
+tasksprint/
   ├── backend/
   ├── frontend/
   └── requirements/
