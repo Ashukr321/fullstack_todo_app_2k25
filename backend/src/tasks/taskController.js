@@ -172,4 +172,22 @@ const taskStats = async (req, res, next) => {
   }
 };
 
-export { createTask, getAllTask, getTaskById, updateTaskById, deleteTaskById, taskStats };
+
+const completedTasks = async (req, res, next) => {
+  try {
+    const userId = req.userId;
+    if (!userId) {
+      return next(createError(400, "userId required"));
+    }
+    const tasks = await Task.find({ user: userId, completed: true }).select("-user");
+    return res.status(200).json({
+      success: true,
+      message: "Completed tasks fetched successfully!",
+      tasks
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export { createTask, getAllTask, getTaskById, updateTaskById, deleteTaskById, taskStats, completedTasks };
