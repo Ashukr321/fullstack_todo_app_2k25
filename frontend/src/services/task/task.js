@@ -9,6 +9,13 @@ const taskService = {
       const cookies = getCookies(["token"]);
       const token = cookies.token;
 
+      if (!token) {
+        // English: No token provided for fetching all tasks.
+        // Hindi: सभी टास्क लाने के लिए टोकन नहीं दिया गया है।
+        // Hinglish: Sabhi tasks lane ke liye token nahi diya gaya hai.
+        throw new Error('No token provided');
+      }
+
       const response = await fetch(`${API_BASE_URL}/api/v1/tasks`, {
         method: 'GET',
         headers: {
@@ -34,6 +41,13 @@ const taskService = {
       const cookies = getCookies(["token"]);
       const token = cookies.token;
 
+      if (!token) {
+        // English: No token provided for fetching task by ID.
+        // Hindi: टास्क आईडी से लाने के लिए टोकन नहीं दिया गया है।
+        // Hinglish: Task ID se lane ke liye token nahi diya gaya hai.
+        throw new Error('No token provided');
+      }
+
       const response = await fetch(`${API_BASE_URL}/api/v1/tasks/${id}`, {
         method: 'GET',
         headers: {
@@ -58,6 +72,13 @@ const taskService = {
     try {
       const cookies = getCookies(["token"]);
       const token = cookies.token;
+
+      if (!token) {
+        // English: No token provided for creating task.
+        // Hindi: टास्क बनाने के लिए टोकन नहीं दिया गया है।
+        // Hinglish: Task banane ke liye token nahi diya gaya hai.
+        throw new Error('No token provided');
+      }
 
       const response = await fetch(`${API_BASE_URL}/api/v1/tasks`, {
         method: 'POST',
@@ -85,6 +106,13 @@ const taskService = {
       const cookies = getCookies(["token"]);
       const token = cookies.token;
 
+      if (!token) {
+        // English: No token provided for updating task.
+        // Hindi: टास्क अपडेट करने के लिए टोकन नहीं दिया गया है।
+        // Hinglish: Task update karne ke liye token nahi diya gaya hai.
+        throw new Error('No token provided');
+      }
+
       const response = await fetch(`${API_BASE_URL}/api/v1/tasks/${id}`, {
         method: 'PUT',
         headers: {
@@ -111,6 +139,13 @@ const taskService = {
       const cookies = getCookies(["token"]);
       const token = cookies.token;
 
+      if (!token) {
+        // English: No token provided for deleting task.
+        // Hindi: टास्क डिलीट करने के लिए टोकन नहीं दिया गया है।
+        // Hinglish: Task delete karne ke liye token nahi diya gaya hai.
+        throw new Error('No token provided');
+      }
+
       const response = await fetch(`${API_BASE_URL}/api/v1/tasks/${id}`, {
         method: 'DELETE',
         headers: {
@@ -129,6 +164,36 @@ const taskService = {
       throw error;
     }
   },
+
+  // get dashboard stats 
+  async getDashboardStats() {
+    try {
+      const cookies = getCookies(["token"]);
+      const token = cookies.token;
+
+      if (!token) {
+        throw new Error('No token provided');
+      }
+
+      const response = await fetch(`${API_BASE_URL}/api/v1/tasks/dashboardStats`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json", 
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      if (!response.ok) {
+        throw new Error("failed to fetch task stats!")
+      }
+
+      return await response.json();
+    } catch (error) {
+      
+      console.error('Error fetching dashboard stats:', error);
+      throw error;
+    }
+  }
 };
 
 export default taskService;
