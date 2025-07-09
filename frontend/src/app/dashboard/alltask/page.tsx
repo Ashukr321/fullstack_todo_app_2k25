@@ -41,7 +41,7 @@ const Page = () => {
 
   // Handle task deletion
   const handleDelete = async (taskId: string) => {
-    try {
+      try {
       const response = await deleteTask(taskId);
       if (response) {
         toast.success(response.message);
@@ -49,10 +49,10 @@ const Page = () => {
         const updatedTasks = tasks?.filter(task => task._id !== taskId) || [];
         setTasks(updatedTasks);
       }
-    } catch (error) {
+      } catch (error) {
       console.error("Failed to delete task:", error);
       toast.error("Failed to delete task");
-    }
+      }
   };
 
   // Handle task completion toggle
@@ -133,7 +133,7 @@ const Page = () => {
           <div className="space-y-6">
             {/* Pending Tasks Section */}
             {pendingTasks.length > 0 && (
-              <div>
+    <div>
                 <div className="flex items-center mb-4">
                   <h2 className="text-lg font-semibold text-gray-900 flex items-center">
                     <div className="w-3 h-3 bg-yellow-400 rounded-full mr-3"></div>

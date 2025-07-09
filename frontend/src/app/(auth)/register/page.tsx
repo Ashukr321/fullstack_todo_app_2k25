@@ -1,16 +1,23 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { registerUser } from "../../../services/auth/auth";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { FiHome } from "react-icons/fi";
 const RegisterPage = () => {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -51,7 +58,18 @@ const RegisterPage = () => {
 
   return (
     <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 py-12 px-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 md:p-10">
+      {/* Home icon top left */}
+      <Link
+        href="/"
+        className="fixed top-6 left-6 z-50 bg-white rounded-full shadow p-2 hover:bg-blue-100 transition-colors border border-blue-200"
+        aria-label="Home"
+      >
+        <FiHome size={24} className="text-blue-600" />
+      </Link>
+      <div
+        className={`w-full max-w-md bg-white rounded-2xl shadow-xl p-8 md:p-10 transition-all duration-700 ease-out
+        ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      >
         <h2 className="text-2xl font-bold text-blue-700 mb-6 text-center">
           Create your account
         </h2>
