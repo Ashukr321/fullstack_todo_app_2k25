@@ -1,12 +1,15 @@
 "use client"
 import React, { useState } from 'react';
 import Link from 'next/link';
-
+import { loginUser } from '@/services/auth/auth';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 const LoginPage = () => {
   const [form, setForm] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -19,14 +22,19 @@ const LoginPage = () => {
     setSuccess('');
     // TODO: Replace with your API call
     try {
-      // Example POST request placeholder
-      // const res = await fetch('/api/login', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(form),
-      // });
-      // const data = await res.json();
-      // if (!res.ok) throw new Error(data.message || 'Login failed');
+      const resData = await loginUser(form.email, form.password);
+
+      if (resData && resData.token && resData.user) {
+        // Store token and user info in cookies (expires in 3 days)
+        document.cookie = `token=${resData.token}; path=/;`;
+        document.cookie = `userInfo=${encodeURIComponent(JSON.stringify(resData.user))}; `;
+      }
+
+      if(resData){
+        toast.success(resData.message);
+        router.push('/dashboard');
+        return;
+      }
       setTimeout(() => {
         setSuccess('Login successful!');
         setLoading(false);
