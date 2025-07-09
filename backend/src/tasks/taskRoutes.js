@@ -1,6 +1,6 @@
 import express from "express";
 import isAuthenticated from "../middleware/isAuthenticated.js";
-import { createTask, getAllTask, getTaskById, updateTaskById, deleteTaskById,taskStats } from './taskController.js'
+import { createTask, getAllTask, getTaskById, updateTaskById, deleteTaskById,taskStats,completedTasks} from './taskController.js'
 const router = express.Router();
 
 // Route to create a new task
@@ -9,8 +9,9 @@ router.post("/tasks", isAuthenticated, createTask);
 // Route to get all tasks
 router.get('/tasks', isAuthenticated, getAllTask);
 router.get('/tasks/dashboardStats', isAuthenticated, taskStats);
+router.get('/tasks/completedTasks', isAuthenticated, completedTasks);
 
-// Route to get a specific task by ID
+// Route to get a specific task by IDcompletedTask
 router.get('/tasks/:id', isAuthenticated, getTaskById);
 
 // Route to update a specific task by ID
