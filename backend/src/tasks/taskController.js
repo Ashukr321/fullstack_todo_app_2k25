@@ -81,29 +81,34 @@ const getTaskById = async (req, res, next) => {
 };
 
 // Controller to update a specific task by ID
+// English: General purpose update controller for task (updates title, description, dueDate, completed)
 const updateTaskById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { completed } = req.body;
+    const { title, description, dueDate, completed } = req.body;
 
     if (!id) {
-      // Task id is required
       return next(createError(400, "task id is required!"));
     }
 
     const task = await Task.findById(id);
 
     if (!task) {
-      // Task not found
-      return next(createError(400, "task not found!"));
+      return next(createError(404, "task not found!"));
     }
-    task.completed = completed;
+
+    // Update fields if provided
+    if (typeof title !== "undefined") task.title = title;
+    if (typeof description !== "undefined") task.description = description;
+    if (typeof dueDate !== "undefined") task.dueDate = dueDate;
+    if (typeof completed !== "undefined") task.completed = completed;
+
     await task.save();
 
     return res.status(200).json({
-      message: "task updated successfully!",
+      message: "Task updated successfully!",
+      task
     });
-    // Task update logic completed
   } catch (error) {
     next(error);
   }

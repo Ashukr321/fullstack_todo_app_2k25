@@ -7,7 +7,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-blue-50">
+    <div className="min-h-screen  bg-blue-50">
       {/* Fixed Header */}
       <div className="fixed top-0 left-0 w-full z-50">
         <Header onMenuClick={() => setSidebarOpen(true)} />
@@ -31,8 +31,12 @@ const Layout = ({ children }: { children: ReactNode }) => {
         )}
         {/* Main Content */}
         <main
-          className="flex-1 overflow-y-auto p-4 md:ml-64 w-full"
-          style={{ maxHeight: 'calc(100vh - 64px)' }}
+          className="flex-1 overflow-y-auto md:ml-64 w-full scrollbar-hide"
+          style={{
+            maxHeight: 'calc(100vh - 60px)',
+            scrollbarWidth: 'none', // Firefox
+            msOverflowStyle: 'none', // IE/Edge
+          }}
         >
           {children}
         </main>

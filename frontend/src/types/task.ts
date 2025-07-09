@@ -14,7 +14,6 @@ export interface CreateTaskData {
   description: string;
   completed?: boolean;
   dueDate: string; // Always string for form inputs
-  user: string;
 }
 
 export interface UpdateTaskData {
