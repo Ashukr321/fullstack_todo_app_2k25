@@ -4,6 +4,9 @@ import { CreateTaskData } from "../../../types/task";
 import toast from "react-hot-toast";
 import taskService from "@/services/task/task";
 import { FiLoader, FiPlusCircle } from "react-icons/fi";
+
+
+
 const Page = () => {
   const [formData, setFormData] = useState<CreateTaskData>({
     title: "",
@@ -33,7 +36,10 @@ const Page = () => {
       const { createTask } = taskService;
       const resData = await createTask(formData);
       if (resData) {
-        toast.success(resData.message);
+        toast.success(
+          resData.message ||
+            "Task created successfully!"
+        );
       }
       setCreating(false);
       // Reset form
@@ -45,7 +51,10 @@ const Page = () => {
       });
     } catch (error) {
       console.error("Error creating task:", error);
-      toast.error("Failed to create task");
+      toast.error(
+        "Failed to create task"
+      );
+      setCreating(false);
     }
   };
 
@@ -56,8 +65,12 @@ const Page = () => {
           <div className="bg-blue-100 text-blue-600 rounded-full p-3 mb-3">
             <FiPlusCircle size={32} />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-center mb-1">Create New Task</h1>
-          <p className="text-gray-500 text-center text-sm">Add a new task to your list and stay productive!</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-center mb-1">
+            Create New Task
+          </h1>
+          <p className="text-gray-500 text-center text-sm">
+            Add a new task to your list and stay productive!
+          </p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-2">
           {/* Title Field */}
