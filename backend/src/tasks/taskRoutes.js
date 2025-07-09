@@ -1,6 +1,6 @@
 import express from "express";
 import isAuthenticated from "../middleware/isAuthenticated.js";
-import { createTask, getAllTask, getTaskById, updateTaskById, deleteTaskById } from './taskController.js'
+import { createTask, getAllTask, getTaskById, updateTaskById, deleteTaskById,taskStats } from './taskController.js'
 const router = express.Router();
 
 // Route to create a new task
@@ -17,5 +17,6 @@ router.put('/tasks/:id', isAuthenticated, updateTaskById); // Note: This should 
 
 // Route to delete a specific task by ID
 router.delete('/tasks/:id', isAuthenticated, deleteTaskById);
+router.get('/tasks/dashboardStats', isAuthenticated, taskStats);
 
 export default router;
