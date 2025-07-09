@@ -23,14 +23,14 @@ const Page = () => {
   const router = useRouter();
 
   const fetchTask = async (taskId: string) => {
-    setLoading(true);
+      setLoading(true);
     const { getTaskById } = taskService;
     const resData = await getTaskById(taskId);
     if (resData) {
       setTask(resData.task);
       toast.success(resData.message);
     }
-    setLoading(false);
+        setLoading(false);
   };
 
   useEffect(() => {
@@ -120,7 +120,7 @@ const Page = () => {
         toast.success(res.message || "Task updated");
         setTask({ ...task, ...editForm });
         setShowEditModal(false);
-      }
+    }
     } catch (err) {
       if(err instanceof Error){
         toast.error("Failed to update task");
@@ -392,7 +392,7 @@ const Page = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-              <div>
+    <div>
                 <label htmlFor="edit-dueDate" className="block text-sm font-medium text-gray-700 mb-1">Due Date</label>
                 <input
                   id="edit-dueDate"
