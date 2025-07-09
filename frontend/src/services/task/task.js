@@ -178,7 +178,7 @@ const taskService = {
       const response = await fetch(`${API_BASE_URL}/api/v1/tasks/dashboardStats`, {
         method: "GET",
         headers: {
-          "Content-Type": "application/json", 
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`
         }
       })
@@ -189,7 +189,34 @@ const taskService = {
 
       return await response.json();
     } catch (error) {
-      
+
+      console.error('Error fetching dashboard stats:', error);
+      throw error;
+    }
+  },
+
+  async getCompletedTask() {
+    try {
+      const cookies = getCookies(["token"]);
+      const token = cookies.token;
+      if (!token) {
+        throw new Error('No token provided');
+      }
+      const response = await fetch(`${API_BASE_URL}/api/v1/tasks/completedTasks`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      if (!response.ok) {
+        throw new Error("failed to fetch task stats!")
+      }
+
+      return await response.json();
+
+    } catch (error) {
       console.error('Error fetching dashboard stats:', error);
       throw error;
     }
